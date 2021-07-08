@@ -163,6 +163,11 @@
     <Image Include="D:\Downloads\Linux\16_Games\14 Chess\images\board.png" />
     <Image Include="D:\Downloads\Linux\16_Games\14 Chess\images\board0.png" />
     <Image Include="D:\Downloads\Linux\16_Games\14 Chess\images\figure.png" />
+    <Image Include="D:\Downloads\Windows\94205495-seamless-modern-black-and-white-chess-board-background-design-vector-illustration-eps10.jpg" />
+    <Image Include="D:\Downloads\Windows\boardtest.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
