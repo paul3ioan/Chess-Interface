@@ -3,6 +3,7 @@
 //#include "Connector.hpp"
 using namespace sf;
 #include <fstream>
+#include <iostream>
 int size = 56;
 Vector2f offset(28, 28);
 
@@ -57,12 +58,13 @@ void move(std::string str)
 int main()
 {
     //504
-    RenderWindow window(VideoMode(1000, 1000), "The Chess! (press SPACE)");
+    RenderWindow window(VideoMode(504, 504), "The Chess! (press SPACE)");
     //    ConnectToEngine("stockfish.exe");    
 
     Texture t1, t2;
     t1.loadFromFile("images/figure.png");
-    t2.loadFromFile("images/94205495-seamless-modern-black-and-white-chess-board-background-design-vector-illustration-eps10.jpg");
+  //  t2.loadFromFile("images/94205495-seamless-modern-black-and-white-chess-board-background-design-vector-illustration-eps10.jpg");
+    t2.loadFromFile("images/board.png");
     //cautat alte imagini
     for (int i = 0;i < 32;i++) f[i].setTexture(t1);
     Sprite sBoard(t2);
@@ -221,8 +223,11 @@ void loadPosition()
             }
     }
     cin.close();
+    for (int i = 0; i < 8; i++, std::cout << '\n')
+        for (int j = 0;j < 8;j++)
+          std::cout << board[i][j] << " ";
     int k = 0;
-    for (int i = 0;i < 8;i++)
+   /* for (int i = 0;i < 8;i++)
         for (int j = 0;j < 8;j++)
         {
             int n = board[i][j];
@@ -234,5 +239,5 @@ void loadPosition()
             k++;
         }
 
-    
+    */
 }
