@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Subprocess.h"
-
+/*
 int main()
 {
 	//Windows test
@@ -22,4 +22,4 @@ int main()
 	proc.read(s);
 	std::cout << s << '\n';
 	return 0;
-}
+}*/

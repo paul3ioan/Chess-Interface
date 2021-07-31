@@ -4,7 +4,7 @@
 #include <string>
 
 using namespace std;
-
+/*
 int main()
 {
 	std::cout << "Salut" << '\n';
@@ -16,4 +16,4 @@ int main()
 	std::cout << x << '\n';
 	std::cout.flush();
 	return 0;
-}
+}*/
