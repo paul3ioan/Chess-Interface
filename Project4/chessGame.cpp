@@ -134,11 +134,11 @@ void ChessGame::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(textSituation);
     target.draw(textLastMove);
 
-   // if ((selectedPiece != NULL) && (selected)) {
-     //   for (int i = 0; i < possibleMovesSquares.size();i++) {
-       //     target.draw(possibleMovesSquares.at(i));
-       // }
-    //}
+    //if ((selectedPiece != NULL) && (selected)) {
+        for (int i = 0; i < possibleMovesSquares.size();i++) {
+            target.draw(possibleMovesSquares.at(i));
+        }
+   // }
 
     for (auto i : pieces)
     {
@@ -232,10 +232,10 @@ void ChessGame::loadPosition()
             else
                 std::cout << 0 << " ";
   */
-    for (auto i : pieces)
-    {
-        std::cout << i.first << " ";
-    }
+   // for (auto i : pieces)
+    //{
+      //  std::cout << i.first << " ";
+    //}
 }
 
 
@@ -249,27 +249,35 @@ void ChessGame::createMovesSquares(int pos) {
     possibleMovesSquares.clear();
     char line = pos / 8+'1';
     char col = pos % 8 +'a';
-    printf("getMovesPiece %c%c \n", line, col);
-    proc.write("getMovesPiece %c%c \n", line,col);
-    char x[2];
-    proc.read(x, '\n');
-        printf(x);
-    /*for (int i = 0; i < selectedPiece->getPossibleMoves().size();i++) {
+    printf("getMovesPiece %c%c \n", col, line);
+    proc.write("getMovesPiece %c%c\n", col,line);
+    char x[105];
+    proc.read(x);
+    int len = atoi(x);
+    std::vector<int> moves;
+
+    for (int i = 1; i <= len; i++)
+    {
+        proc.read(x);
+        moves.push_back(atoi(x));
+    }
+    
+    for (int i  : moves) {
         sf::RectangleShape tmp;
-        tmp.setPosition(sf::Vector2f((selectedPiece->getPossibleMoves().at(i) % 8) * 64.f, (selectedPiece->getPossibleMoves().at(i) / 8) * 64.f));
+        tmp.setPosition(sf::Vector2f((i % 8) * 64.f, (i / 8) * 64.f));
         tmp.setSize(sf::Vector2f(64.f, 64.f));
         tmp.setFillColor(sf::Color(0x66b4cc50));
         possibleMovesSquares.push_back(tmp);
     }
 
     sf::RectangleShape tmp;
-    tmp.setPosition(sf::Vector2f((selectedPiece->getPosition() % 8) * 64.f, (selectedPiece->getPosition() / 8) * 64.f));
+    tmp.setPosition(sf::Vector2f((pos % 8) * 64.f, (pos / 8) * 64.f));
     tmp.setSize(sf::Vector2f(64.f, 64.f));
     tmp.setFillColor(sf::Color(0x00000000));
     tmp.setOutlineColor(sf::Color::Red);
     tmp.setOutlineThickness(-3.f);
     possibleMovesSquares.push_back(tmp);
-    */
+    
     return;
     }
 

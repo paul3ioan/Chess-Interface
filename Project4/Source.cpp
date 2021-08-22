@@ -33,11 +33,11 @@ int main() {
                                if ((0 <= event.mouseButton.x) && (event.mouseButton.x <= 512) && (0 <= event.mouseButton.y) && (event.mouseButton.y <= 512)) {
                                    unsigned int buttonPos{ (event.mouseButton.x / 64) + ((event.mouseButton.y / 64) * (8 * (512 / window.getSize().y))) };
 
-                                   //if (!chess.getSelected())
-                                  // {
+                             //      if (!chess.getSelected())
+                              //     {
                                    std::cout << chess.selectPiece(buttonPos) << '\n';
                                        
-                                  // }
+                              //     }
                                     //   chess.moveSelected(buttonPos);
                                }
                                else if ((517 <= event.mouseButton.x) && (event.mouseButton.x <= 763) && (5 <= event.mouseButton.y) && (event.mouseButton.y <= 45)) {

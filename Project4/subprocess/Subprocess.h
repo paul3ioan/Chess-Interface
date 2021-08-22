@@ -47,9 +47,11 @@ namespace Utlils
 				subprocess_read_stdout(&proc, &c, 1);
 				while (c != '\n')
 				{
+					//pos++;
 					buffer[pos++] = c;
 					subprocess_read_stdout(&proc, &c, 1);
 				}
+//				buffer[pos++] = 'a';
 				buffer[pos] = '\0';
 			}
 		}

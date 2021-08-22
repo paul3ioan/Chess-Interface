@@ -22,7 +22,7 @@ private:
     Board boardu;
   //  std::array<Piece, 16> whitePieces;
    // std::array<Piece, 16> blackPieces;
-   //Piece* selectedPiece;
+   
     std::vector<sf::RectangleShape> possibleMovesSquares;
     std::string lastMove;
     char board[8][8];
