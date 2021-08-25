@@ -6,7 +6,7 @@
 #ifndef _CHESSGAME_H
 #define _CHESSGAME_H
 
-#include "subprocess/Subprocess.h";
+#include "subprocess/Subprocess.h"
 
 #include <SFML/Graphics.hpp>
 #include <array>

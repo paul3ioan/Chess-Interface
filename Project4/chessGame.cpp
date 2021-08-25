@@ -4,7 +4,7 @@
 
 #include "chessGame.h"
 
-const char* cmd[] = { R"(C:\Users\paul\source\repos\Chess AI\x64\Debug\Chess AI.exe)", nullptr };
+const char* cmd[] = { R"(/home/vlad/Chess-AI/cmake-build-debug/src/ChessAI_run)", nullptr };
 Utlils::Subprocess proc(cmd);
 sf::Sprite setTexture(char c, int);
 ChessGame::ChessGame()
