@@ -16,18 +16,18 @@
 #include "pieceTexture.h"
 #include "board.h"
 //#include "piece.h"
-
+#include <unordered_map>
 class ChessGame : public sf::Drawable {
 private:
     Board boardu;
   //  std::array<Piece, 16> whitePieces;
    // std::array<Piece, 16> blackPieces;
-   
+    std::unordered_map<int, char> pieces;
     std::vector<sf::RectangleShape> possibleMovesSquares;
     std::string lastMove;
     char board[8][8];
     sf::RectangleShape infoRestart;
-    std::vector<std::pair<int, char>> pieces;
+    //std::vector<std::pair<int, char>> pieces;
     sf::Font font;
     sf::Text textRestart;
     sf::Text textTurn;
@@ -35,7 +35,7 @@ private:
     sf::Text textLastMove;
 
 
-    bool selected;
+    int selected;
     bool playerTurn= true; // true = White turn, false = Black Turn
     bool playerTurnCheck;
     bool mate;
@@ -63,7 +63,7 @@ private:
 public:
     ChessGame();
 
-    bool getSelected() { return selected; }
+    int getSelected() { return selected; }
 
     bool getMate() { return mate; }
     void loadPosition();

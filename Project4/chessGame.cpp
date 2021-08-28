@@ -4,7 +4,7 @@
 
 #include "chessGame.h"
 
-const char* cmd[] = { R"(/home/vlad/Chess-AI/cmake-build-debug/src/ChessAI_run)", nullptr };
+const char* cmd[] = { R"(/media/storage/Documents/Chess AI/Chess-AI/cmake-build-debug/src/ChessAI_run)", nullptr };
 Utlils::Subprocess proc(cmd);
 sf::Sprite setTexture(char c, int);
 ChessGame::ChessGame()
@@ -144,6 +144,7 @@ void ChessGame::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     {
         target.draw(setTexture(i.second, i.first));
     }
+
 }
 sf::Sprite setTexture(char c, int pos) {
     sf::Sprite m_sprite = sf::Sprite();
@@ -221,8 +222,8 @@ void ChessGame::loadPosition()
             else
             {
                 board[line][col] = c;
-                
-                pieces.emplace_back((line * 8 + col) , c );
+                pieces[line* 8 + col] = c;
+
                 col++;
             }
     }
@@ -243,8 +244,8 @@ void ChessGame::loadPosition()
 
 void ChessGame::createMovesSquares(int pos) {
 
-    //if (selectedPiece == NULL)
-      //  return;
+   // if (selected == -1)
+     //   return;
 
     possibleMovesSquares.clear();
     char line = pos / 8+'1';
@@ -303,8 +304,6 @@ bool ChessGame::selectPiece(int pos) {
         possibleMovesSquares.clear();
         return selected;
     }
-
-
         createMovesSquares(pos);
 
         return isPiece;
@@ -313,9 +312,9 @@ bool ChessGame::selectPiece(int pos) {
 
 /*
 void ChessGame::moveSelected(int pos) {
-    bool validMove{ false };
 
-    if ((selectedPiece == NULL) || !selected) //Probably doesnt need both
+
+    if (!selected) //Probably doesnt need both
         return;
 
     // Check pos with the Piece's possibleMoves
@@ -325,8 +324,6 @@ void ChessGame::moveSelected(int pos) {
             break;
         }
     }
-
-    if (validMove) {
 
         // If Castling Move
         if ((selectedPiece->getType() == 'K') && (!selectedPiece->getMoved())) {
@@ -416,5 +413,6 @@ void ChessGame::moveSelected(int pos) {
     selected = false;
 
 }
+
 
 */
