@@ -20,6 +20,7 @@
 class ChessGame : public sf::Drawable {
 private:
     Board boardu;
+    int piecePosition = -1;
   //  std::array<Piece, 16> whitePieces;
    // std::array<Piece, 16> blackPieces;
     std::unordered_map<int, char> pieces;
@@ -34,8 +35,8 @@ private:
     sf::Text textSituation;
     sf::Text textLastMove;
 
-
-    int selected;
+    std::vector<int> moves;
+    int selected = -1;
     bool playerTurn= true; // true = White turn, false = Black Turn
     bool playerTurnCheck;
     bool mate;
@@ -69,7 +70,7 @@ public:
     void loadPosition();
    bool selectPiece(int pos);
 
-//    void moveSelected(int pos);
+    void moveSelected(int pos);
 
    // void restart();
 

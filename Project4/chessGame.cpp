@@ -193,7 +193,8 @@ sf::Sprite setTexture(char c, int pos) {
         break;
 
     default:
-        std::cerr << "Error piece type does not exist.\n";
+//        m_sprite.setColor(sf::Color::White);
+        //std::cerr << "Error piece type does not exist.\n";
         break;
     }
     m_sprite.setOrigin(sf::Vector2f(m_sprite.getTexture()->getSize().x / 2, m_sprite.getTexture()->getSize().y / 2));
@@ -244,9 +245,8 @@ void ChessGame::loadPosition()
 
 void ChessGame::createMovesSquares(int pos) {
 
-   // if (selected == -1)
-     //   return;
-
+    piecePosition = pos;
+    moves.clear();
     possibleMovesSquares.clear();
     char line = pos / 8+'1';
     char col = pos % 8 +'a';
@@ -255,12 +255,14 @@ void ChessGame::createMovesSquares(int pos) {
     char x[105];
     proc.read(x);
     int len = atoi(x);
-    std::vector<int> moves;
+
+
 
     for (int i = 1; i <= len; i++)
     {
         proc.read(x);
         moves.push_back(atoi(x));
+
     }
     
     for (int i  : moves) {
@@ -298,27 +300,46 @@ bool ChessGame::selectPiece(int pos) {
         if (board[line][col] >= 'a' and board[line][col] <= 'z')
             isPiece = true;
     }
-    
+    if(!moves.empty())
+    for(auto i :moves)
+    {
+        if(pos == i)
+        {
+            selected = pos + 1;
+            possibleMovesSquares.clear();
+            return selected;
+        }
+    }
     
         if (!isPiece) {
         possibleMovesSquares.clear();
+        selected = -1;
         return selected;
     }
+        selected = 0;
         createMovesSquares(pos);
 
-        return isPiece;
+
+        return selected;
 }
 
 
-/*
+
 void ChessGame::moveSelected(int pos) {
+    int line = pos / 8;
+    int col = pos % 8;
+    board[line][col] = board[piecePosition / 8][piecePosition % 8];
+    board[piecePosition / 8][piecePosition % 8] = '0';
+    possibleMovesSquares.clear();
+    moves.clear();
+    std::cout << piecePosition<<'\n';
+    pieces[pos] = pieces[piecePosition];
+    pieces.erase(piecePosition);
 
-
-    if (!selected) //Probably doesnt need both
-        return;
-
+    printf("playerMove %d \n", pos);
+    proc.write("playerMove %d\n" ,pos);
     // Check pos with the Piece's possibleMoves
-    for (int i = 0;i < selectedPiece->getPossibleMoves().size();i++) {
+   /* for (int i = 0;i < selectedPiece->getPossibleMoves().size();i++) {
         if (pos == selectedPiece->getPossibleMoves().at(i)) {
             validMove = true;
             break;
@@ -408,11 +429,10 @@ void ChessGame::moveSelected(int pos) {
         playerTurn = !playerTurn; // Here player turn changes
         calcPossibleMoves();
     }
-
-    selectedPiece = NULL;
-    selected = false;
+    */
+    //selectedPiece = NULL;
+    selected = -1;
 
 }
 
 
-*/
