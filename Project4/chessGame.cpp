@@ -3,7 +3,7 @@
 */
 
 #include "chessGame.h"
-
+#include<cstring>
 const char* cmd[] = { R"(/media/storage/Documents/Chess AI/Chess-AI/cmake-build-debug/src/ChessAI_run)", nullptr };
 Utlils::Subprocess proc(cmd);
 sf::Sprite setTexture(char c, int);
@@ -205,14 +205,22 @@ sf::Sprite setTexture(char c, int pos) {
 void ChessGame::loadPosition()
 {
     // loadpositionul e gata cred
-    std::ifstream fin("Text.txt");
-    std::string position, moveList;
-    fin >> position;
-
-
+   // std::ifstream fin("Text.txt");
+   char position[101];
+//    std::s, moveList;
+    proc.write("loadPosition");
+    proc.read(position);
+//    fin >> position;
+    int idx = 0;
+    int len = strlen(position);
     int line = 0, col = 0;
-    for (char c : position)
+    for (int i = 0; i < len; i ++)
     {
+        if(position[i] == ' ')
+        {
+            idx= i; break;
+        }
+        char c = position[i];
         if (c <= '9' and c >= '0')
         {
             col += c - '0';
@@ -228,16 +236,14 @@ void ChessGame::loadPosition()
                 col++;
             }
     }
-  /*  for (int i = 0; i < 8; i++, std::cout << '\n')
-        for (int j = 0;j < 8;j++)
-            if (board[i][j] != ' ') std::cout << board[i][j] << " ";
-            else
-                std::cout << 0 << " ";
-  */
-   // for (auto i : pieces)
-    //{
-      //  std::cout << i.first << " ";
-    //}
+    if(idx < len)
+    {
+        idx ++;
+        if(position[idx] == 'w')
+            playerTurn = true;
+        else
+            playerTurn = false;
+    }
 }
 
 
@@ -255,16 +261,26 @@ void ChessGame::createMovesSquares(int pos) {
     char x[105];
     proc.read(x);
     int len = atoi(x);
-
-
-
     for (int i = 1; i <= len; i++)
     {
         proc.read(x);
-        moves.push_back(atoi(x));
+        int number = 0, idx = 0;
+        while(x[idx] != NULL )
+        {
+            if(x[idx] == '/')
+                ;
+            else
+                if(x[idx] == 'e')
+                {
+                    enpasant = number;
+                }else
 
+            number = number * 10 + (x[idx] - '0');
+            idx++;
+        }
+        moves.push_back(number);
+        std::cout << number<<'\n';
     }
-    
     for (int i  : moves) {
         sf::RectangleShape tmp;
         tmp.setPosition(sf::Vector2f((i % 8) * 64.f, (i / 8) * 64.f));
@@ -326,6 +342,61 @@ bool ChessGame::selectPiece(int pos) {
 
 
 void ChessGame::moveSelected(int pos) {
+    //enpasant
+    if(pos == enpasant)
+    {
+
+            int capturedPawn = pos < piecePosition ? pos + 8 : pos - 8;
+            board[capturedPawn / 8][capturedPawn % 8] = '0';
+            pieces.erase(capturedPawn);
+
+    }
+    enpasant = -1;
+    //white short castle
+
+    if(piecePosition == 60 and pos == 62)
+    {
+        if(pieces[piecePosition] == 'K')
+        {
+            board[7][5] = board[7][7];
+            board[7][7] = '0';
+            pieces[61] = pieces[63];
+            pieces.erase(63);
+        }
+    }
+    //white long castle
+    if(piecePosition == 60 and pos == 58)
+    {
+        if(pieces[piecePosition] == 'K')
+        {
+            board[7][3] = board[7][0];
+            board[7][0] = '0';
+            pieces[59] = pieces[56];
+            pieces.erase(56);
+        }
+    }
+    //black short castle
+    if(piecePosition == 4 and pos == 6)
+    {
+        if(pieces[piecePosition] == 'k')
+        {
+            board[0][5] = board[0][7];
+            board[0][7] = '0';
+            pieces[5] = pieces[7];
+            pieces.erase(7);
+        }
+    }
+    //black long castle
+    if(piecePosition == 4 and pos == 2)
+    {
+        if(pieces[piecePosition] == 'k')
+        {
+            board[0][3] = board[0][0];
+            board[0][0] = '0';
+            pieces[3] = pieces[0];
+            pieces.erase(0);
+        }
+    }
     int line = pos / 8;
     int col = pos % 8;
     board[line][col] = board[piecePosition / 8][piecePosition % 8];
@@ -338,6 +409,10 @@ void ChessGame::moveSelected(int pos) {
 
     printf("playerMove %d \n", pos);
     proc.write("playerMove %d\n" ,pos);
+    char read[3];
+    proc.read(read);
+    std::cout << read<<'\n';
+    read[0] == 'b' ? playerTurn = 0 : playerTurn = 1;
     // Check pos with the Piece's possibleMoves
    /* for (int i = 0;i < selectedPiece->getPossibleMoves().size();i++) {
         if (pos == selectedPiece->getPossibleMoves().at(i)) {

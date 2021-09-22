@@ -34,7 +34,7 @@ private:
     sf::Text textTurn;
     sf::Text textSituation;
     sf::Text textLastMove;
-
+    int enpasant = -1;
     std::vector<int> moves;
     int selected = -1;
     bool playerTurn= true; // true = White turn, false = Black Turn
