@@ -19,13 +19,14 @@
 #include <unordered_map>
 class ChessGame : public sf::Drawable {
 private:
-    Board boardu;
+    int promotedPiece = -1;
     int piecePosition = -1;
   //  std::array<Piece, 16> whitePieces;
    // std::array<Piece, 16> blackPieces;
     std::unordered_map<int, char> pieces;
     std::vector<sf::RectangleShape> possibleMovesSquares;
     std::string lastMove;
+
     char board[8][8];
     sf::RectangleShape infoRestart;
     //std::vector<std::pair<int, char>> pieces;
@@ -35,13 +36,15 @@ private:
     sf::Text textSituation;
     sf::Text textLastMove;
     int enpasant = -1;
+
+
     std::vector<int> moves;
     int selected = -1;
-    bool playerTurn= true; // true = White turn, false = Black Turn
+
     bool playerTurnCheck;
     bool mate;
     int turn;
-    
+
     void createMovesSquares(int);
 /*
     void calcPossibleMoves();
@@ -57,19 +60,23 @@ private:
 
     void checkMate();*/
 
-    //void updateInfo();
+    void updateInfo();
     
    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 public:
+    std::vector<int> remeberPromotePosition;
+    bool isPromote = false;
+    int chosenPromote = -1;
+    Board boardu;
     ChessGame();
-
+    bool playerTurn= true; // true = White turn, false = Black Turn
     int getSelected() { return selected; }
-
+    void promoting_Interface();
     bool getMate() { return mate; }
     void loadPosition();
    bool selectPiece(int pos);
-
+    void selectPiecePromote(int , int);
     void moveSelected(int pos);
 
    // void restart();

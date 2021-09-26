@@ -3,10 +3,14 @@
 */
 
 #include "chessGame.h"
+#include<future>
 #include<cstring>
 const char* cmd[] = { R"(/media/storage/Documents/Chess AI/Chess-AI/cmake-build-debug/src/ChessAI_run)", nullptr };
 Utlils::Subprocess proc(cmd);
 sf::Sprite setTexture(char c, int);
+sf::Sprite promoteInterface(int , ChessGame );
+
+
 ChessGame::ChessGame()
     
 {
@@ -47,6 +51,11 @@ ChessGame::ChessGame()
     textLastMove.setStyle(sf::Text::Bold);
     textLastMove.setFillColor(sf::Color::White);
     textLastMove.setPosition(530.f, 200.f);
+    playerTurn = true;
+    playerTurnCheck = false;
+    mate = false;
+    turn = 1;
+    this->updateInfo();
 
 
     //restart();
@@ -93,8 +102,8 @@ void ChessGame::restart() {
 
 
 }*/
-/*
-void ChessGame::updateInfo() {
+ void  ChessGame::updateInfo() {
+
     textTurn.setString("Turn: " + std::to_string(turn));
     textLastMove.setString(lastMove);
 
@@ -121,12 +130,20 @@ void ChessGame::updateInfo() {
     }
 }
 
-
-*/
+void ChessGame::promoting_Interface()
+{
+     if(!isPromote) {
+         this->boardu.togglePromote(true);
+         isPromote = true;
+     }
+     else{
+         this->boardu.togglePromote(false);
+         isPromote = false;
+     }
+}
 
 void ChessGame::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.clear(sf::Color::Black);
-
     target.draw(boardu);
     target.draw(infoRestart);
     target.draw(textRestart);
@@ -144,8 +161,14 @@ void ChessGame::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     {
         target.draw(setTexture(i.second, i.first));
     }
+    if(isPromote)
+    for(int i = 0 ; i< 4 ; i ++)
+    {
+        target.draw(promoteInterface(i, *this));
+    }
 
 }
+
 sf::Sprite setTexture(char c, int pos) {
     sf::Sprite m_sprite = sf::Sprite();
     switch (c)
@@ -202,6 +225,7 @@ sf::Sprite setTexture(char c, int pos) {
     m_sprite.setPosition(sf::Vector2f((pos % 8) * 64.f + 32.f, (pos / 8) * 64.f + 32.f));
     return m_sprite;
 }
+
 void ChessGame::loadPosition()
 {
     // loadpositionul e gata cred
@@ -246,13 +270,11 @@ void ChessGame::loadPosition()
     }
 }
 
-
-
-
 void ChessGame::createMovesSquares(int pos) {
 
     piecePosition = pos;
     moves.clear();
+    remeberPromotePosition.clear();
     possibleMovesSquares.clear();
     char line = pos / 8+'1';
     char col = pos % 8 +'a';
@@ -273,6 +295,9 @@ void ChessGame::createMovesSquares(int pos) {
                 if(x[idx] == 'e')
                 {
                     enpasant = number;
+                }else if(x[idx ] == 'p')
+                {
+                    remeberPromotePosition.push_back (number);
                 }else
 
             number = number * 10 + (x[idx] - '0');
@@ -299,8 +324,6 @@ void ChessGame::createMovesSquares(int pos) {
     
     return;
     }
-
-
 
 bool ChessGame::selectPiece(int pos) {
     int line = pos / 8;
@@ -339,36 +362,97 @@ bool ChessGame::selectPiece(int pos) {
         return selected;
 }
 
-
-
 void ChessGame::moveSelected(int pos) {
     //enpasant
-    if(pos == enpasant)
-    {
+    if (pos == enpasant) {
 
-            int capturedPawn = pos < piecePosition ? pos + 8 : pos - 8;
-            board[capturedPawn / 8][capturedPawn % 8] = '0';
-            pieces.erase(capturedPawn);
+        int capturedPawn = pos < piecePosition ? pos + 8 : pos - 8;
+        board[capturedPawn / 8][capturedPawn % 8] = '0';
+        pieces.erase(capturedPawn);
 
+    }
+    for(int positionPromote : remeberPromotePosition)
+        if (pos == positionPromote) {
+        promoting_Interface();
+        chosenPromote = pos;
+        if(promotedPiece == -1)
+            return;
+        if (playerTurn) {
+            if (promotedPiece == 1) {
+                pieces[pos] = 'Q';
+            }
+            if (promotedPiece == 3) {
+                pieces[pos] = 'B';
+            }
+            if (promotedPiece == 2) {
+                pieces[pos] = 'N';
+            }
+            if (promotedPiece == 4) {
+                pieces[pos] = 'R';
+            }
+        }
+        else
+        {
+            if (promotedPiece == 1) {
+                pieces[pos] = 'q';
+            }
+            if (promotedPiece == 3) {
+                pieces[pos] = 'b';
+            }
+            if (promotedPiece == 2) {
+                pieces[pos] = 'n';
+            }
+            if (promotedPiece == 4) {
+                pieces[pos] = 'r';
+            }
+        }
+
+        int line = pos / 8;
+        int col = pos % 8;
+        board[line][col] = pieces[pos];
+        board[piecePosition / 8][piecePosition % 8] = '0';
+        possibleMovesSquares.clear();
+        moves.clear();
+        pieces.erase(piecePosition);
+        if(promotedPiece == 1)
+        {
+            printf("playerMove %d%c \n", pos,'q');
+            proc.write("playerMove %d%c\n" ,pos,'q');
+        }
+        else
+        if(promotedPiece == 3)
+        {
+            printf("playerMove %d%c \n", pos,'b');
+            proc.write("playerMove %d%c\n" ,pos,'b');
+        }
+        else
+        if(promotedPiece == 2)
+        {
+            printf("playerMove %d%c \n", pos,'n');
+            proc.write("playerMove %d%c\n" ,pos,'n');
+        }
+        else
+        if(promotedPiece == 4)
+        {
+            printf("playerMove %d%c \n", pos,'r');
+            proc.write("playerMove %d%c\n" ,pos,'r');
+        }
     }
     enpasant = -1;
     //white short castle
 
-    if(piecePosition == 60 and pos == 62)
-    {
-        if(pieces[piecePosition] == 'K')
-        {
+    if (piecePosition == 60 and pos == 62) {
+        if (pieces[piecePosition] == 'K') {
             board[7][5] = board[7][7];
             board[7][7] = '0';
             pieces[61] = pieces[63];
             pieces.erase(63);
         }
+
     }
     //white long castle
-    if(piecePosition == 60 and pos == 58)
-    {
-        if(pieces[piecePosition] == 'K')
-        {
+    if (piecePosition == 60 and pos == 58) {
+        if (pieces[piecePosition] == 'K') {
             board[7][3] = board[7][0];
             board[7][0] = '0';
             pieces[59] = pieces[56];
@@ -376,10 +460,8 @@ void ChessGame::moveSelected(int pos) {
         }
     }
     //black short castle
-    if(piecePosition == 4 and pos == 6)
-    {
-        if(pieces[piecePosition] == 'k')
-        {
+    if (piecePosition == 4 and pos == 6) {
+        if (pieces[piecePosition] == 'k') {
             board[0][5] = board[0][7];
             board[0][7] = '0';
             pieces[5] = pieces[7];
@@ -387,127 +469,80 @@ void ChessGame::moveSelected(int pos) {
         }
     }
     //black long castle
-    if(piecePosition == 4 and pos == 2)
-    {
-        if(pieces[piecePosition] == 'k')
-        {
+    if (piecePosition == 4 and pos == 2) {
+        if (pieces[piecePosition] == 'k') {
             board[0][3] = board[0][0];
             board[0][0] = '0';
             pieces[3] = pieces[0];
             pieces.erase(0);
         }
     }
-    int line = pos / 8;
+    if (promotedPiece == -1) {
+        int line = pos / 8;
+
     int col = pos % 8;
     board[line][col] = board[piecePosition / 8][piecePosition % 8];
     board[piecePosition / 8][piecePosition % 8] = '0';
     possibleMovesSquares.clear();
     moves.clear();
-    std::cout << piecePosition<<'\n';
+
     pieces[pos] = pieces[piecePosition];
     pieces.erase(piecePosition);
-
-    printf("playerMove %d \n", pos);
-    proc.write("playerMove %d\n" ,pos);
+        printf("playerMove %d%c \n", pos,'/');
+        proc.write("playerMove %d%c\n" ,pos,'/');
+    }
     char read[3];
     proc.read(read);
     std::cout << read<<'\n';
     read[0] == 'b' ? playerTurn = 0 : playerTurn = 1;
-    // Check pos with the Piece's possibleMoves
-   /* for (int i = 0;i < selectedPiece->getPossibleMoves().size();i++) {
-        if (pos == selectedPiece->getPossibleMoves().at(i)) {
-            validMove = true;
-            break;
-        }
-    }
-
-        // If Castling Move
-        if ((selectedPiece->getType() == 'K') && (!selectedPiece->getMoved())) {
-            if (selectedPiece->getPlayer()) { // If white
-                // whitePieces[0] Bot Left Rook, whitePieces[7] Bot Right Rook
-                if (pos == 62)
-                    whitePieces[7].setPosition(61);
-                else if (pos == 58)
-                    whitePieces[0].setPosition(59);
-            }
-            else { // If Black
-                // blackPieces[7] Top Left Rook, blackPieces[0] Top Right Rook
-                if (pos == 6)
-                    blackPieces[0].setPosition(5);
-                else if (pos == 2)
-                    blackPieces[7].setPosition(3);
-            }
-        }
-
-
-
-
-        // If Pawn double move (set en passant)
-        // White pawn -16, Black pawn +16
-        if ((selectedPiece->getType() == 'P')) {
-            if (!selectedPiece->getMoved()) {
-                if (pos == (selectedPiece->getPosition() - 16)) {
-                    selectedPiece->setEnPassant(selectedPiece->getPosition() - 8);
-                }
-                else if (pos == (selectedPiece->getPosition() + 16)) {
-                    selectedPiece->setEnPassant(selectedPiece->getPosition() + 8);
-                }
-            }
-            else {
-                for (int i = 0; i < 16; i++) {
-                    if (playerTurn) {
-                        if (pos == blackPieces[i].getEnPassant())
-                            blackPieces[i].setPosition(pos);
-                    }
-                    else {
-                        if (pos == whitePieces[i].getEnPassant())
-                            whitePieces[i].setPosition(pos);
-                    }
-                }
-            }
-        }
-        if (selectedPiece->getMoved()) {
-            for (int i = 0; i < 16; i++) {
-                whitePieces[i].setEnPassant(-1);
-                blackPieces[i].setEnPassant(-1);
-            }
-        }
-
-
-        selectedPiece->setPosition(pos);
-
-
-
-
-        lastMove = "Last Turn:\n" + selectedPiece->toString();
-        for (int i = 0; i < 16; i++) {
-            if (selectedPiece->getPlayer()) { // If White
-                if (blackPieces[i].getPosition() == pos) {
-                    blackPieces[i].setPosition(-1);
-                    break;
-                }
-            }
-            else { // If Black
-                if (whitePieces[i].getPosition() == pos) {
-                    whitePieces[i].setPosition(-1);
-                    break;
-                }
-            }
-        }
-
-
-
-        if (playerTurnCheck) {
-            playerTurnCheck = false;
-        }
-
-        playerTurn = !playerTurn; // Here player turn changes
-        calcPossibleMoves();
-    }
-    */
-    //selectedPiece = NULL;
+    this->updateInfo();
     selected = -1;
-
+    promotedPiece = -1;
+    remeberPromotePosition.clear();
+    chosenPromote = -1;
 }
 
+sf::Sprite promoteInterface(int i, ChessGame chess)
+{
+    sf::Sprite m_sprite =sf::Sprite();
+    if( chess.playerTurn)
+    {
 
+        if(i == 0) m_sprite.setTexture(PieceTextures::whiteQueen);
+        if(i == 1) m_sprite.setTexture(PieceTextures::whiteKnight);
+        if(i == 2) m_sprite.setTexture(PieceTextures::whiteBishop);
+        if(i == 3) m_sprite.setTexture(PieceTextures::whiteRook);
+
+
+    }
+    else if(!chess.playerTurn){
+
+        if(i == 0)m_sprite.setTexture(PieceTextures::blackQueen);
+        if(i == 2)m_sprite.setTexture(PieceTextures::blackBishop);
+        if(i == 1)m_sprite.setTexture(PieceTextures::blackKnight);
+        if(i == 3)m_sprite.setTexture(PieceTextures::blackRook);
+
+    }
+
+    sf::RectangleShape pos = chess.boardu.promotingBoxes[i];
+    m_sprite.setPosition(32 + pos.getPosition().x, 32 + pos.getPosition().y);
+
+
+    m_sprite.setOrigin(sf::Vector2f(m_sprite.getTexture()->getSize().x / 2, m_sprite.getTexture()->getSize().y / 2));
+    m_sprite.setScale(sf::Vector2f(0.375f, 0.375f));
+    return m_sprite;
+}
+
+void ChessGame::selectPiecePromote(int x, int y)
+{
+     std::cout << x << " " << y;
+    if(x <=640 and y <=254)
+        promotedPiece= 1;
+    else
+    if(x<=640 and y >254)
+        promotedPiece= 2;
+    else
+    if(x >640 and y <=254)
+        promotedPiece= 3;
+    else promotedPiece= 4;
+}
