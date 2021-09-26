@@ -151,10 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="board.cpp" />
+    <ClCompile Include="chessGame.cpp" />
+    <ClCompile Include="piece.cpp" />
+    <ClCompile Include="pieceTexture.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="subprocess\child.cpp" />
+    <ClCompile Include="subprocess\parent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="board.h" />
+    <ClInclude Include="chessGame.h" />
     <ClInclude Include="D:\Downloads\Linux\16_Games\14 Chess\Connector.hpp" />
+    <ClInclude Include="piece.h" />
+    <ClInclude Include="pieceTexture.h" />
+    <ClInclude Include="subprocess\Subprocess.h" />
+    <ClInclude Include="subprocess\subproc_lib.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="D:\Downloads\Linux\16_Games\14 Chess\stockfish.exe" />
@@ -163,6 +175,29 @@
     <Image Include="D:\Downloads\Linux\16_Games\14 Chess\images\board.png" />
     <Image Include="D:\Downloads\Linux\16_Games\14 Chess\images\board0.png" />
     <Image Include="D:\Downloads\Linux\16_Games\14 Chess\images\figure.png" />
+    <Image Include="D:\Downloads\Windows\94205495-seamless-modern-black-and-white-chess-board-background-design-vector-illustration-eps10.jpg" />
+    <Image Include="D:\Downloads\Windows\boardtest.jpeg" />
+    <Image Include="images\boardChess.png" />
+    <Image Include="images\chess-board.jpg" />
+    <Image Include="images\pngegg.png" />
+    <Image Include="Textures\b_bishop.png" />
+    <Image Include="Textures\b_king.png" />
+    <Image Include="Textures\b_knight.png" />
+    <Image Include="Textures\b_pawn.png" />
+    <Image Include="Textures\b_queen.png" />
+    <Image Include="Textures\b_rook.png" />
+    <Image Include="Textures\w_bishop.png" />
+    <Image Include="Textures\w_king.png" />
+    <Image Include="Textures\w_knight.png" />
+    <Image Include="Textures\w_pawn.png" />
+    <Image Include="Textures\w_queen.png" />
+    <Image Include="Textures\w_rook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Textures\arial.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

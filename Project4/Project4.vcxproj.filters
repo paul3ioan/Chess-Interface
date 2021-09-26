@@ -16,14 +16,53 @@
     <Filter Include="Source Files\images">
       <UniqueIdentifier>{7d8343ad-9c02-47f9-ac5a-cd57492c498f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Textures">
+      <UniqueIdentifier>{30ec1ef3-211b-41ec-860a-f9269b99735d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="subprocess\child.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="subprocess\parent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="chessGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pieceTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Downloads\Linux\16_Games\14 Chess\Connector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="subprocess\subproc_lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="subprocess\Subprocess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chessGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pieceTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="piece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -40,5 +79,64 @@
     <Image Include="D:\Downloads\Linux\16_Games\14 Chess\images\figure.png">
       <Filter>Source Files\images</Filter>
     </Image>
+    <Image Include="D:\Downloads\Windows\boardtest.jpeg">
+      <Filter>Source Files\images</Filter>
+    </Image>
+    <Image Include="D:\Downloads\Windows\94205495-seamless-modern-black-and-white-chess-board-background-design-vector-illustration-eps10.jpg">
+      <Filter>Source Files\images</Filter>
+    </Image>
+    <Image Include="images\boardChess.png">
+      <Filter>Source Files\images</Filter>
+    </Image>
+    <Image Include="images\pngegg.png">
+      <Filter>Source Files\images</Filter>
+    </Image>
+    <Image Include="images\chess-board.jpg">
+      <Filter>Source Files\images</Filter>
+    </Image>
+    <Image Include="Textures\w_bishop.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\w_king.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\w_knight.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\w_pawn.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\w_queen.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\w_rook.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\b_bishop.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\b_king.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\b_knight.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\b_pawn.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\b_queen.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\b_rook.png">
+      <Filter>Source Files\Textures</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Textures\arial.ttf" />
   </ItemGroup>
 </Project>
